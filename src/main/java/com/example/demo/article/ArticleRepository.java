@@ -8,8 +8,8 @@ import java.util.Optional;
 
 @Repository
 public interface ArticleRepository extends JpaRepository<Article, Long> {
-    @Query("SELECT a FROM article a WHERE a.url = ?1")
+    @Query("SELECT a FROM Article a WHERE a.url = ?1")
     Optional<Article> findArticleByUrl(String url);
-    @Query("SELECT a FROM article a WHERE a.title = ?1")
+    @Query("SELECT a FROM Article a WHERE a.title = ?1")
     Optional<Article> findArticleByTitle(String title);
 }
