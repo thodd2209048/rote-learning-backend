@@ -24,8 +24,8 @@ public class ArticleController {
     }
 
     @PostMapping
-    public void addArticle(@RequestBody Article article) {
-        articleService.addArticle(article);
+    public Article addArticle(@RequestBody Article article) {
+        return articleService.addArticle(article);
     }
 
     @DeleteMapping(path = {"articleId"})

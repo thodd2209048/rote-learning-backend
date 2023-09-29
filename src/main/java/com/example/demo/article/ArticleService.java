@@ -20,13 +20,13 @@ public class ArticleService {
         return articleRepository.findAll();
     }
 
-    public void addArticle(Article article) {
+    public Article addArticle(Article article) {
         Optional<Article> articleOptionalUrl = articleRepository.findArticleByUrl(article.getUrl());
         if (articleOptionalUrl.isPresent()) {
             throw new IllegalStateException("article with url: " + article.getUrl() + " is exists");
         }
 
-        articleRepository.save(article);
+        return articleRepository.save(article);
     }
 
     public void deleteArticle(Long articleId) {
