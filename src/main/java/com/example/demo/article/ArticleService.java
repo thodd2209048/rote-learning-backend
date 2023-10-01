@@ -21,12 +21,28 @@ public class ArticleService {
     }
 
     public Article addArticle(Article article) {
-        Optional<Article> articleOptionalUrl = articleRepository.findArticleByUrl(article.getUrl());
-        if (articleOptionalUrl.isPresent()) {
-            throw new IllegalStateException("article with url: " + article.getUrl() + " is exists");
+        try{
+            Optional<Article> articleOptionalUrl = articleRepository.findArticleByUrl(article.getUrl());
+            if (articleOptionalUrl.isPresent()) {
+                throw new IllegalStateException("article with url: " + article.getUrl() + " is exists");
+            }
+            if(article.getUpdateAt()== null){
+                article.setUpdateAt(ZonedDateTime.now());
+            }
+            if(article.getCreatedAt() == null){
+                article.setCreatedAt(ZonedDateTime.now());
+            }
+            if(article.getLastTimeRead() == null){
+                article.setLastTimeRead(ZonedDateTime.now());
+            }
+            if(article.getStatus()==null){
+                article.setStatus(Status.COMPLETED);
+            }
+            return articleRepository.save(article);
+        } catch (IllegalStateException e){
+            e.printStackTrace();
         }
-
-        return articleRepository.save(article);
+        return null;
     }
 
     public void deleteArticle(Long articleId) {
@@ -73,5 +89,9 @@ public class ArticleService {
         if (lastTimeRead != null && !Objects.equals(lastTimeRead, article.getLastTimeRead())) {
             article.setLastTimeRead(lastTimeRead);
         }
+    }
+
+    public List<String> getAllSubject() {
+        return articleRepository.getAllSubject();
     }
 }

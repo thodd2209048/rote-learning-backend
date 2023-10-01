@@ -10,6 +10,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping(path = "api/article")
 public class ArticleController {
     private final ArticleService articleService;
@@ -21,8 +22,8 @@ public class ArticleController {
         this.tagController = tagController;
     }
 
+
     @GetMapping
-    @CrossOrigin
     public List<Article> getArticles() {
         return articleService.getArticles();
     }
@@ -60,5 +61,10 @@ public class ArticleController {
             @RequestParam(required = false) ZonedDateTime lastTimeRead
     ) {
         articleService.updateArticle(articleId, title, url, tags, subject, createdAt, updateAt, status, lastTimeRead);
+    }
+
+    @GetMapping(path = "subjects")
+    public List<String> getAllSubject() {
+        return articleService.getAllSubject();
     }
 }
