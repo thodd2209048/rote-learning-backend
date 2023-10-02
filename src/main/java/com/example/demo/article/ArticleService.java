@@ -1,6 +1,8 @@
 package com.example.demo.article;
 
 import com.example.demo.constant.Status;
+import com.example.demo.tags.Tag;
+import com.example.demo.tags.TagRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
@@ -11,9 +13,11 @@ import java.util.Optional;
 @Service
 public class ArticleService {
     private final ArticleRepository articleRepository;
+    private final TagRepository tagRepository;
 
-    public ArticleService(ArticleRepository repository) {
+    public ArticleService(ArticleRepository repository, TagRepository tagRepository) {
         this.articleRepository = repository;
+        this.tagRepository = tagRepository;
     }
 
     public List<Article> getArticles() {
@@ -53,17 +57,18 @@ public class ArticleService {
         articleRepository.deleteById(articleId);
     }
 
-    public void updateArticle(Long articleId,
-                              String title,
-                              String url,
-                              List<String> tags,
-                              String subject,
-                              ZonedDateTime createdAt,
-                              ZonedDateTime updateAt,
-                              Status status,
-                              ZonedDateTime lastTimeRead) {
-        Article article = articleRepository.findById(articleId)
-                .orElseThrow(() -> new IllegalStateException("Article with id: " + articleId + "does not exists"));
+    public void updateArticle(Long id, Article newArticle) {
+        Article article = articleRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException("Article with id: " + id + "does not exists"));
+
+        String title = newArticle.getTitle();
+        String url = newArticle.getUrl();
+        List<String> tags = newArticle.getTags();
+        String subject = newArticle.getSubject();
+        ZonedDateTime createdAt = newArticle.getCreatedAt();
+        ZonedDateTime updateAt = newArticle.getUpdateAt();
+        Status status = newArticle.getStatus();
+        ZonedDateTime lastTimeRead = newArticle.getLastTimeRead();
 
         if (title != null && !title.isEmpty() && !Objects.equals(title, article.getTitle())) {
             article.setTitle(title);
@@ -93,5 +98,22 @@ public class ArticleService {
 
     public List<String> getAllSubject() {
         return articleRepository.getAllSubject();
+    }
+
+//    TAG
+    public void addNewTag(Tag tag) {
+        Optional<Tag> tagOptional = tagRepository.findTagByTagName(tag.getName());
+        if (tagOptional.isEmpty()) {
+            tagRepository.save(tag);
+        }
+    }
+    public void incrementOccurrenceCount(String tagName){
+        Tag currentTag = tagRepository.findTagByTagName(tagName)
+                .orElseThrow(()-> new IllegalStateException("Tag " + tagName + " does not exists"));
+        currentTag.setOccurrenceCount(currentTag.getOccurrenceCount() + 1);
+        currentTag.setUpdatedAt(ZonedDateTime.now());
+    }
+    public boolean isTagExists(String tagName){
+        return tagRepository.isTagExists(tagName);
     }
 }

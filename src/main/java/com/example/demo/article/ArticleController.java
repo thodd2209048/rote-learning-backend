@@ -1,6 +1,5 @@
 package com.example.demo.article;
 
-import com.example.demo.constant.Status;
 import com.example.demo.tags.Tag;
 import com.example.demo.tags.TagController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +31,10 @@ public class ArticleController {
     public Article addArticle(@RequestBody Article article) {
         for (String tagName : article.getTags()
         ) {
-            if (tagController.isTagExists(tagName)) {
-                tagController.incrementOccurrenceCount(tagName);
+            if (articleService.isTagExists(tagName)) {
+                articleService.incrementOccurrenceCount(tagName);
             } else {
-                tagController.addNewTag(
+                articleService.addNewTag(
                         new Tag(tagName, 1L, ZonedDateTime.now(), ZonedDateTime.now())
                 );
             }
@@ -49,18 +48,9 @@ public class ArticleController {
     }
 
     @PutMapping(path = {"articleId"})
-    public void updateArticle(
-            @PathVariable("articleId") Long articleId,
-            @RequestParam(required = false) String title,
-            @RequestParam(required = false) String url,
-            @RequestParam(required = false) List<String> tags,
-            @RequestParam(required = false) String subject,
-            @RequestParam(required = false) ZonedDateTime createdAt,
-            @RequestParam(required = false) ZonedDateTime updateAt,
-            @RequestParam(required = false) Status status,
-            @RequestParam(required = false) ZonedDateTime lastTimeRead
+    public void updateArticle(@PathVariable("articleId") Long articleId, @RequestBody Article newArticle
     ) {
-        articleService.updateArticle(articleId, title, url, tags, subject, createdAt, updateAt, status, lastTimeRead);
+        articleService.updateArticle(articleId, newArticle);
     }
 
     @GetMapping(path = "subjects")
