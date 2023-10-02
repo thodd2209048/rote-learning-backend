@@ -26,6 +26,9 @@ public class ArticleConfig {
             Article article = new Article("Example Article", "https://example.com/article",
                     tags, "Programming and Java", createdAt, updatedAt,
                     Status.COMPLETED, lastTimeRead);
+            Article rceArticle = new Article("Phát hiện 4 lỗ hổng RCE nghiêm trọng trong Control Web Panel", "https://whitehat.vn/threads/phat-hien-4-lo-hong-rce-nghiem-trong-trong-control-web-panel.17500/",
+                    List.of("security", "cwp"), "security", createdAt, updatedAt,
+                    Status.COMPLETED, lastTimeRead);
 
 
             repository.saveAll(List.of(article));
