@@ -19,11 +19,11 @@ public class TagConfig {
             ZonedDateTime createdAt = ZonedDateTime.now();
             ZonedDateTime updatedAt = ZonedDateTime.now();
             Tag tagJava = new Tag("java", createdAt, updatedAt);
-
-
+            Tag tagSecurity = new Tag("security", createdAt, updatedAt);
+            Tag tagCwp = new Tag("cwp", createdAt, updatedAt);
             ZonedDateTime lastTimeRead = ZonedDateTime.now();
 
-            repository.saveAll(List.of(tagJava));
+            repository.saveAll(List.of(tagJava, tagSecurity, tagCwp));
         };
     }
 }
