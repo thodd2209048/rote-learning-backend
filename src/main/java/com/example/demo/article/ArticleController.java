@@ -1,7 +1,5 @@
 package com.example.demo.article;
 
-import com.example.demo.tags.Tag;
-import com.example.demo.tags.TagController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,12 +11,10 @@ import java.util.List;
 @RequestMapping(path = "api/article")
 public class ArticleController {
     private final ArticleService articleService;
-    private final TagController tagController;
 
     @Autowired
-    public ArticleController(ArticleService articleService, TagController tagController) {
+    public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
-        this.tagController = tagController;
     }
 
 
@@ -29,16 +25,6 @@ public class ArticleController {
 
     @PostMapping
     public Article addArticle(@RequestBody Article article) {
-        for (String tagName : article.getTags()
-        ) {
-            if (articleService.isTagExists(tagName)) {
-                articleService.incrementOccurrenceCount(tagName);
-            } else {
-                articleService.addNewTag(
-                        new Tag(tagName, 1L, ZonedDateTime.now(), ZonedDateTime.now())
-                );
-            }
-        }
         return articleService.addArticle(article);
     }
 

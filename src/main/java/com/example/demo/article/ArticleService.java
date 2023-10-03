@@ -100,21 +100,4 @@ public class ArticleService {
     public List<String> getAllSubject() {
         return articleRepository.getAllSubject();
     }
-
-//    TAG
-    public void addNewTag(Tag tag) {
-        Optional<Tag> tagOptional = tagRepository.findTagByTagName(tag.getName());
-        if (tagOptional.isEmpty()) {
-            tagRepository.save(tag);
-        }
-    }
-    public void incrementOccurrenceCount(String tagName){
-        Tag currentTag = tagRepository.findTagByTagName(tagName)
-                .orElseThrow(()-> new IllegalStateException("Tag " + tagName + " does not exists"));
-        currentTag.setOccurrenceCount(currentTag.getOccurrenceCount() + 1);
-        currentTag.setUpdatedAt(ZonedDateTime.now());
-    }
-    public boolean isTagExists(String tagName){
-        return tagRepository.isTagExists(tagName);
-    }
 }
