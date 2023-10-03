@@ -1,8 +1,6 @@
 package com.example.demo.article;
 
 import com.example.demo.constant.Status;
-import com.example.demo.tags.Tag;
-import com.example.demo.tags.TagRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
@@ -13,11 +11,9 @@ import java.util.Optional;
 @Service
 public class ArticleService {
     private final ArticleRepository articleRepository;
-    private final TagRepository tagRepository;
 
-    public ArticleService(ArticleRepository repository, TagRepository tagRepository) {
+    public ArticleService(ArticleRepository repository) {
         this.articleRepository = repository;
-        this.tagRepository = tagRepository;
     }
 
     public List<Article> getArticles() {
