@@ -42,6 +42,7 @@ public class ArticleService {
             if(article.getStatus()==null){
                 article.setStatus(Status.COMPLETED);
             }
+
             return articleRepository.save(article);
         } catch (IllegalStateException e){
             e.printStackTrace();
