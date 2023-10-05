@@ -1,5 +1,6 @@
 package com.example.demo.constant;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
@@ -15,12 +16,15 @@ public enum Status {
     public String getStatusString(){
         return statusString;
     }
+
+    @JsonCreator
     public static Status statusFromString(String text) {
+        if(text == null) return COMPLETED;
         for (Status status : Status.values()) {
             if (status.statusString.equalsIgnoreCase(text)) {
                 return status;
             }
         }
-        throw new IllegalArgumentException("No enum value found for string: " + text);
+        throw new IllegalArgumentException("Invalid status: " + text);
     }
 }

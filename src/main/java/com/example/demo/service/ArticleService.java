@@ -3,16 +3,11 @@ package com.example.demo.service;
 import com.example.demo.dto.AddArticleDto;
 import com.example.demo.dto.UpdateArticleDto;
 import com.example.demo.repository.ArticleRepository;
-import com.example.demo.constant.Status;
 import com.example.demo.entity.Article;
 import com.example.demo.response.AddArticleResponse;
 import com.example.demo.response.GetArticleResponse;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
