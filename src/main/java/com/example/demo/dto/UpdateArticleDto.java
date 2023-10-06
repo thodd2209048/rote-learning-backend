@@ -24,8 +24,6 @@ public class UpdateArticleDto implements IUpdateArticleDto {
     private Status status;
     private LocalDate lastTimeRead;
     private Repetition repetition;
-    private ZonedDateTime createdAt;
-    private ZonedDateTime updatedAt;
 
     @Override
     public void updateArticle(Article article){
@@ -55,12 +53,6 @@ public class UpdateArticleDto implements IUpdateArticleDto {
         }
         if (repetition != null && !Objects.equals(status, article.getStatus())) {
             article.setStatus(status);
-        }
-        if (createdAt != null && !Objects.equals(createdAt, article.getCreatedAt())) {
-            article.setCreatedAt(createdAt);
-        }
-        if (updatedAt != null && !Objects.equals(updatedAt, article.getUpdatedAt())) {
-            article.setUpdatedAt(updatedAt);
         }
     }
 }
