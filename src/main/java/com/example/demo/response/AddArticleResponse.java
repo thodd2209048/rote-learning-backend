@@ -1,10 +1,12 @@
 package com.example.demo.response;
 
 import com.example.demo.constant.ContentType;
+import com.example.demo.constant.Repetition;
 import com.example.demo.constant.Status;
 import com.example.demo.entity.Article;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -17,6 +19,9 @@ public class AddArticleResponse {
     private String series;
     private ContentType type;
     private Status status;
+    private LocalDate lastTimeRead;
+    private Repetition repetition;
+    private LocalDate nextTimeRead;
 
     public AddArticleResponse(Article article) {
         this.id = article.getId();
@@ -27,5 +32,8 @@ public class AddArticleResponse {
         this.series = article.getSeries();
         this.type = article.getType();
         this.status = article.getStatus();
+        this.lastTimeRead = article.getLastTimeRead();
+        this.repetition = article.getRepetition();
+        this.nextTimeRead = article.getNextTimeRead();
     }
 }

@@ -1,6 +1,7 @@
 package com.example.demo.dto;
 
 import com.example.demo.constant.ContentType;
+import com.example.demo.constant.Repetition;
 import com.example.demo.constant.Status;
 import com.example.demo.entity.Article;
 import jakarta.validation.constraints.*;
@@ -8,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -36,10 +38,11 @@ public class AddArticleDto {
     private ContentType type;
 
     private Status status;
+    private Repetition repetition;
 
 
     public Article toArticle() {
-        return new Article(title, url, tags, subject, series, type, status);
+        return new Article(url, title, tags, subject, series, type, status, repetition, LocalDate.now());
     }
 
 }
