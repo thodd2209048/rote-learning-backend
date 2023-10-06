@@ -6,6 +6,7 @@ import com.example.demo.constant.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 
@@ -30,13 +31,16 @@ public class Article extends BaseEntity{
     @Transient
     private LocalDate nextTimeRead;
 
-    public Article(String title,
-                   String url,
+    public Article(String url,
+                   String title,
                    List<String> tags,
                    String subject,
                    String series,
                    ContentType type,
-                   Status status) {
+                   Status status,
+                   Repetition repetition,
+    LocalDate lastTimeRead
+) {
         this.title = title;
         this.url = url;
         this.tags = tags;
@@ -44,6 +48,9 @@ public class Article extends BaseEntity{
         this.type = type;
         this.subject = subject;
         this.status = status;
+        this.repetition = repetition;
+        this.lastTimeRead = lastTimeRead;
+
     }
 
     public LocalDate getNextTimeRead(){

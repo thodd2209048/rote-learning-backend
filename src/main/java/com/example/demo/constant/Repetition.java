@@ -4,25 +4,27 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum Repetition {
-    NOT_READ(0),
-    FIRST_READ(1),
-    SECOND_READ(2),
-    THIRD_READ(3),
-    FOURTH_READ(4),
-    COMPLETED(5);
+    FIRST_READING(0, "first reading"),
+    FIRST_RE_READING(1, "1"),
+    SECOND_RE_READING(2, "2"),
+    THIRD_RE_READING(3, "3"),
+    FOURTH_RE_READING(4, "4"),
+    COMPLETED(5, "completed");
 
     private final Integer step;
-    Repetition(Integer step) {
+    private final String stepString;
+    Repetition(Integer step, String stepString) {
         this.step = step;
+        this.stepString = stepString;
     }
 
-    @JsonValue
+
     public Integer getStep(){
         return step;
     }
 
     @JsonCreator
-    public static Repetition contentTypeFromString(Integer step){
+    public static Repetition contentTypeFromInteger(Integer step){
         for(Repetition contentType: Repetition.values()){
             if(contentType.getStep().equals(step)){
                 return contentType;
@@ -30,4 +32,21 @@ public enum Repetition {
         }
         throw new IllegalArgumentException("Invalid content type: " + step);
     }
+
+    @JsonValue
+    public String getStepString(){
+        return stepString;
+    }
+
+    @JsonCreator
+    public static Repetition contentTypeFromString(String stepString){
+        for(Repetition contentType: Repetition.values()){
+            if(contentType.getStepString().equals(stepString)){
+                return contentType;
+            }
+        }
+        throw new IllegalArgumentException("Invalid content type: " + stepString);
+    }
+
+
 }
