@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Data
-public class UpdateArticleDto {
+public class UpdateArticleDto implements IUpdateArticleDto {
     private String url;
     private String title;
     private List<String> tags;
@@ -27,6 +27,7 @@ public class UpdateArticleDto {
     private ZonedDateTime createdAt;
     private ZonedDateTime updatedAt;
 
+    @Override
     public void updateArticle(Article article){
         if (title != null && !title.isEmpty() && !Objects.equals(title, article.getTitle())) {
             article.setTitle(title);

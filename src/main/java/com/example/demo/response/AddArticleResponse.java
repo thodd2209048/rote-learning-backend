@@ -9,6 +9,7 @@ import java.util.List;
 
 @Data
 public class AddArticleResponse {
+    private Long id;
     private String title;
     private String url;
     private List<String> tags;
@@ -18,6 +19,7 @@ public class AddArticleResponse {
     private Status status;
 
     public AddArticleResponse(Article article) {
+        this.id = article.getId();
         this.title = article.getTitle();
         this.url = article.getUrl();
         this.tags = article.getTags();

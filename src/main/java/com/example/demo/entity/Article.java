@@ -27,6 +27,8 @@ public class Article extends BaseEntity{
     private Status status;
     private LocalDate lastTimeRead;
     private Repetition repetition;
+    @Transient
+    private LocalDate nextTimeRead;
 
     public Article(String title,
                    String url,
@@ -42,5 +44,9 @@ public class Article extends BaseEntity{
         this.type = type;
         this.subject = subject;
         this.status = status;
+    }
+
+    public LocalDate getNextTimeRead(){
+        return lastTimeRead.plusDays(repetition.getStep());
     }
 }

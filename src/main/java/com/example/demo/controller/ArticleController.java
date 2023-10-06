@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.AddArticleDto;
 import com.example.demo.dto.UpdateArticleDto;
+import com.example.demo.dto.UpdateLastTimeReadArticleDto;
 import com.example.demo.entity.Article;
 import com.example.demo.response.AddArticleResponse;
 import com.example.demo.response.GetArticleResponse;

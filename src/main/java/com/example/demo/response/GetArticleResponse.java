@@ -8,6 +8,7 @@ import java.util.List;
 
 @Data
 public class GetArticleResponse {
+    private Long id;
     private String title;
     private String url;
     private List<String> tags;
@@ -15,6 +16,7 @@ public class GetArticleResponse {
     private Status status;
 
     public GetArticleResponse(Article article) {
+        this.id = article.getId();
         this.title = article.getTitle();
         this.url = article.getUrl();
         this.tags = article.getTags();
