@@ -2,6 +2,7 @@ package com.example.demo.constant;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.Getter;
 
 public enum Repetition {
     FIRST_READING(0, "first reading"),
@@ -11,6 +12,7 @@ public enum Repetition {
     FOURTH_RE_READING(4, "4"),
     COMPLETED(5, "completed");
 
+    @Getter
     private final Integer step;
     private final String stepString;
     Repetition(Integer step, String stepString) {
@@ -19,9 +21,6 @@ public enum Repetition {
     }
 
 
-    public Integer getStep(){
-        return step;
-    }
 
     @JsonCreator
     public static Repetition contentTypeFromInteger(Integer step){
