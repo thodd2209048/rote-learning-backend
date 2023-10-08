@@ -1,9 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.AddArticleDto;
-import com.example.demo.dto.IUpdateArticleDto;
-import com.example.demo.dto.UpdateArticleDto;
-import com.example.demo.dto.UpdateLastTimeReadArticleDto;
+import com.example.demo.dto.*;
 import com.example.demo.repository.ArticleRepository;
 import com.example.demo.entity.Article;
 import com.example.demo.response.AddArticleResponse;
@@ -68,11 +65,29 @@ public class ArticleService {
 //        articleRepository.save(article);
 //    }
 
-    public <T extends IUpdateArticleDto> void updateArticle(Long id, T newArticle){
+//    public <T extends IUpdateArticleDto> void updateArticle(Long id, T newArticle){
+//        Article article = articleRepository.findById(id)
+//                .orElseThrow(() -> new IllegalStateException("Article with id: " + id + "does not exists"));
+//
+//        newArticle.updateArticle(article);
+//        System.out.println(newArticle);
+//        articleRepository.save(article);
+//    }
+public  void updateArticle(Long id, UpdateArticleDto newArticle){
+    Article article = articleRepository.findById(id)
+            .orElseThrow(() -> new IllegalStateException("Article with id: " + id + "does not exists"));
+
+    newArticle.updateArticle(article);
+    System.out.println(newArticle);
+    articleRepository.save(article);
+}
+
+    public  void updateRepetitionArticle(Long id, UpdateRepetitionDto newArticle){
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Article with id: " + id + "does not exists"));
 
         newArticle.updateArticle(article);
+        System.out.println(newArticle);
         articleRepository.save(article);
     }
 

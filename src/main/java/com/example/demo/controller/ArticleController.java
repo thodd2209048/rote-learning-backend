@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.AddArticleDto;
 import com.example.demo.dto.UpdateArticleDto;
 import com.example.demo.dto.UpdateLastTimeReadArticleDto;
+import com.example.demo.dto.UpdateRepetitionDto;
 import com.example.demo.entity.Article;
 import com.example.demo.response.AddArticleResponse;
 import com.example.demo.response.GetArticleResponse;
@@ -35,6 +36,11 @@ public class ArticleController {
     @PutMapping("/{articleId}")
     public void updateArticle(@PathVariable Long articleId, @RequestBody UpdateArticleDto newArticle) {
         articleService.updateArticle(articleId, newArticle);
+    }
+
+    @PutMapping("/updateRepetition/{articleId}")
+    public void updateRepetitionArticle(@PathVariable Long articleId, @RequestBody UpdateRepetitionDto newArticle) {
+        articleService.updateRepetitionArticle(articleId, newArticle);
     }
 
     @DeleteMapping(path = {"articleId"})

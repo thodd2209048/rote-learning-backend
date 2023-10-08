@@ -12,16 +12,13 @@ import java.util.Objects;
 public class UpdateRepetitionDto implements IUpdateArticleDto {
     @NotNull
     private Repetition repetition;
-    @NotNull
-    private LocalDate lastTimeRead;
 
     @Override
     public void updateArticle(Article article){
-        if (!Objects.equals(lastTimeRead, article.getLastTimeRead())) {
-            article.setLastTimeRead(lastTimeRead);
-        }
+        System.out.println(repetition);
         if (!Objects.equals(repetition, article.getRepetition())) {
             article.setRepetition(repetition);
         }
+        article.setLastTimeRead(LocalDate.now());
     }
 }

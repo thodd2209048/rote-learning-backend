@@ -54,6 +54,9 @@ public class Article extends BaseEntity {
     }
 
     public LocalDate getNextTimeRead() {
-        return lastTimeRead.plusDays(repetition.getStep());
+        if (repetition == null ||
+                lastTimeRead == null ||
+                repetition.getStepString().equals("completed")) return null;
+        return lastTimeRead.plusDays(repetition.getNextPeriod());
     }
 }
