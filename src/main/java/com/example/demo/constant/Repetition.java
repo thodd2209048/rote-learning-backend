@@ -2,36 +2,24 @@ package com.example.demo.constant;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.Getter;
 
 public enum Repetition {
-    FIRST_READING(0, "first reading"),
-    FIRST_RE_READING(1, "1"),
-    SECOND_RE_READING(2, "2"),
-    THIRD_RE_READING(3, "3"),
-    FOURTH_RE_READING(4, "4"),
-    COMPLETED(5, "completed");
+    FIRST_READING("first reading", 1),
+    FIRST_RE_READING( "1", 3),
+    SECOND_RE_READING( "2", 7),
+    THIRD_RE_READING( "3", 16),
+    FOURTH_RE_READING( "4", 60),
+    COMPLETED( "completed", 0);
 
-    private final Integer step;
     private final String stepString;
-    Repetition(Integer step, String stepString) {
-        this.step = step;
+    @Getter
+    private final Integer nextPeriod;
+    Repetition(String stepString, Integer nextPeriod) {
         this.stepString = stepString;
+        this.nextPeriod = nextPeriod;
     }
 
-
-    public Integer getStep(){
-        return step;
-    }
-
-    @JsonCreator
-    public static Repetition contentTypeFromInteger(Integer step){
-        for(Repetition contentType: Repetition.values()){
-            if(contentType.getStep().equals(step)){
-                return contentType;
-            }
-        }
-        throw new IllegalArgumentException("Invalid content type: " + step);
-    }
 
     @JsonValue
     public String getStepString(){

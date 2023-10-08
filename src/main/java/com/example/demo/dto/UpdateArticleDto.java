@@ -4,6 +4,7 @@ import com.example.demo.constant.ContentType;
 import com.example.demo.constant.Repetition;
 import com.example.demo.constant.Status;
 import com.example.demo.entity.Article;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -15,14 +16,22 @@ import java.util.Objects;
 
 @Data
 public class UpdateArticleDto implements IUpdateArticleDto {
+    @NotBlank
     private String url;
+    @NotBlank
     private String title;
+    @NotEmpty
     private List<String> tags;
+    @NotBlank
     private String subject;
     private String series;
+    @NotNull
     private ContentType type;
+    @NotNull
     private Status status;
+    @NotNull
     private LocalDate lastTimeRead;
+    @NotNull
     private Repetition repetition;
 
     @Override
@@ -51,8 +60,8 @@ public class UpdateArticleDto implements IUpdateArticleDto {
         if (lastTimeRead != null && !Objects.equals(lastTimeRead, article.getLastTimeRead())) {
             article.setLastTimeRead(lastTimeRead);
         }
-        if (repetition != null && !Objects.equals(status, article.getStatus())) {
-            article.setStatus(status);
+        if (repetition != null && repetition!=article.getRepetition()) {
+            article.setRepetition(repetition);
         }
     }
 }

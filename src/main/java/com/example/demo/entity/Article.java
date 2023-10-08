@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table
-public class Article extends BaseEntity{
+public class Article extends BaseEntity {
     private String url;
     private String title;
     private List<String> tags;
@@ -39,8 +39,8 @@ public class Article extends BaseEntity{
                    ContentType type,
                    Status status,
                    Repetition repetition,
-    LocalDate lastTimeRead
-) {
+                   LocalDate lastTimeRead
+    ) {
         this.title = title;
         this.url = url;
         this.tags = tags;
@@ -53,7 +53,10 @@ public class Article extends BaseEntity{
 
     }
 
-    public LocalDate getNextTimeRead(){
-        return lastTimeRead.plusDays(repetition.getStep());
+    public LocalDate getNextTimeRead() {
+        if (repetition == null ||
+                lastTimeRead == null ||
+                repetition.getStepString().equals("completed")) return null;
+        return lastTimeRead.plusDays(repetition.getNextPeriod());
     }
 }
