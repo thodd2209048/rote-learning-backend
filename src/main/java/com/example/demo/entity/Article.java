@@ -28,8 +28,6 @@ public class Article extends BaseEntity {
     private Status status;
     private LocalDate lastTimeRead;
     private Repetition repetition;
-    @Transient
-    private LocalDate nextTimeRead;
 
     public Article(String url,
                    String title,

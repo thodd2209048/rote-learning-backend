@@ -6,6 +6,8 @@ import com.example.demo.entity.Article;
 import com.example.demo.response.AddArticleResponse;
 import com.example.demo.response.GetArticleResponse;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +22,14 @@ public class ArticleService {
     public List<GetArticleResponse> getArticles() {
         return articleRepository.findAll()
                 .stream()
+                .map(GetArticleResponse::new)
+                .toList();
+    }
+
+    public List<GetArticleResponse> getReReadingArticles() {
+        return articleRepository.findAll()
+                .stream()
+                .filter(a -> a.getNextTimeRead()!=null && a.getNextTimeRead().isAfter(LocalDate.now()))
                 .map(GetArticleResponse::new)
                 .toList();
     }
@@ -94,6 +104,7 @@ public  void updateArticle(Long id, UpdateArticleDto newArticle){
     public List<String> getAllSubject() {
         return articleRepository.getAllSubject();
     }
+
 
 
 }

@@ -7,6 +7,7 @@ import com.example.demo.entity.Article;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class GetArticleResponse {
     private LocalDate lastTimeRead;
     private ZonedDateTime createdAt;
     private ZonedDateTime updatedAt;
+    private LocalDate nextTimeRead;
 
 
     public GetArticleResponse(Article article) {
@@ -39,5 +41,10 @@ public class GetArticleResponse {
         this.lastTimeRead = article.getLastTimeRead();
         this.createdAt = article.getCreatedAt();
         this.updatedAt = article.getUpdatedAt();
+        this.nextTimeRead = article.getNextTimeRead();
+    }
+
+    public Integer getOverdueDays() {
+        return Period.between(LocalDate.now(),nextTimeRead).getDays();
     }
 }

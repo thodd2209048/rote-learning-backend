@@ -33,6 +33,11 @@ public class ArticleController {
         return articleService.getArticles();
     }
 
+    @GetMapping(path = "/shouldRead")
+    public List<GetArticleResponse> getReReadingArticles() {
+        return articleService.getReReadingArticles();
+    }
+
     @PutMapping("/{articleId}")
     public void updateArticle(@PathVariable Long articleId, @RequestBody UpdateArticleDto newArticle) {
         articleService.updateArticle(articleId, newArticle);
