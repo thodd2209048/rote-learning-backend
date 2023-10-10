@@ -7,6 +7,7 @@ import com.example.demo.entity.Article;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Data
@@ -21,6 +22,8 @@ public class GetArticleResponse {
     private Status status;
     private Repetition repetition;
     private LocalDate lastTimeRead;
+    private ZonedDateTime createdAt;
+    private ZonedDateTime updatedAt;
 
 
     public GetArticleResponse(Article article) {
@@ -34,5 +37,7 @@ public class GetArticleResponse {
         this.status = article.getStatus();
         this.repetition = article.getRepetition();
         this.lastTimeRead = article.getLastTimeRead();
+        this.createdAt = article.getCreatedAt();
+        this.updatedAt = article.getUpdatedAt();
     }
 }
