@@ -4,6 +4,7 @@ import com.example.demo.constant.ContentType;
 import com.example.demo.constant.Repetition;
 import com.example.demo.constant.Status;
 import com.example.demo.entity.Article;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -45,6 +46,7 @@ public class GetArticleResponse {
     }
 
     public Integer getOverdueDays() {
-        return Period.between(LocalDate.now(),nextTimeRead).getDays();
+        if (nextTimeRead == null) return null;
+        return Period.between(LocalDate.now(), nextTimeRead).getDays();
     }
 }
