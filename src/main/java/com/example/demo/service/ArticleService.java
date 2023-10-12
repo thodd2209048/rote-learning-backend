@@ -27,9 +27,10 @@ public class ArticleService {
     }
 
     public List<GetArticleResponse> getReReadingArticles() {
+        LocalDate tomorrow = LocalDate.now().plusDays(1);
         return articleRepository.findAll()
                 .stream()
-                .filter(a -> a.getNextTimeRead()!=null && a.getNextTimeRead().isAfter(LocalDate.now()))
+                .filter(a -> a.getNextTimeRead()!=null && a.getNextTimeRead().isBefore(tomorrow))
                 .map(GetArticleResponse::new)
                 .toList();
     }
