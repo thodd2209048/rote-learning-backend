@@ -3,6 +3,7 @@ package com.example.demo.entity;
 import com.example.demo.constant.ContentType;
 import com.example.demo.constant.Repetition;
 import com.example.demo.constant.Status;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 @Data
@@ -59,4 +61,6 @@ public class Article extends BaseEntity {
                 repetition.getStepString().equals("completed")) return null;
         return lastTimeRead.plusDays(repetition.getNextPeriod());
     }
+
+
 }

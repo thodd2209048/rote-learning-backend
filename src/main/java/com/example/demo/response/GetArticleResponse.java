@@ -4,9 +4,11 @@ import com.example.demo.constant.ContentType;
 import com.example.demo.constant.Repetition;
 import com.example.demo.constant.Status;
 import com.example.demo.entity.Article;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -24,6 +26,7 @@ public class GetArticleResponse {
     private LocalDate lastTimeRead;
     private ZonedDateTime createdAt;
     private ZonedDateTime updatedAt;
+    private LocalDate nextTimeRead;
 
 
     public GetArticleResponse(Article article) {
@@ -39,5 +42,11 @@ public class GetArticleResponse {
         this.lastTimeRead = article.getLastTimeRead();
         this.createdAt = article.getCreatedAt();
         this.updatedAt = article.getUpdatedAt();
+        this.nextTimeRead = article.getNextTimeRead();
+    }
+
+    public Integer getOverdueDays() {
+        if (nextTimeRead == null) return null;
+        return Period.between(LocalDate.now(), nextTimeRead).getDays();
     }
 }
