@@ -42,6 +42,9 @@ public class AddArticleDto {
 
 
     public Article toArticle() {
+        if (type == null) {
+            type = ContentType.ARTICLE;
+        }
         return new Article(url, title, tags, subject, series, type, status, repetition, LocalDate.now());
     }
 
