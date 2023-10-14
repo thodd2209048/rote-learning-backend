@@ -4,6 +4,7 @@ import com.example.demo.constant.ContentType;
 import com.example.demo.constant.Repetition;
 import com.example.demo.constant.Status;
 import com.example.demo.entity.Article;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -33,6 +34,8 @@ public class UpdateArticleDto implements IUpdateArticleDto {
     private LocalDate lastTimeRead;
     @NotNull
     private Repetition repetition;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSS")
+    private ZonedDateTime createdAt;
 
     @Override
     public void updateArticle(Article article){
@@ -62,6 +65,9 @@ public class UpdateArticleDto implements IUpdateArticleDto {
         }
         if (repetition != null && repetition!=article.getRepetition()) {
             article.setRepetition(repetition);
+        }
+        if (createdAt != null && createdAt!=article.getCreatedAt()){
+            article.setCreatedAt(createdAt);
         }
     }
 }
