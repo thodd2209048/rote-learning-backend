@@ -38,6 +38,9 @@ public class ArticleController {
         return articleService.getReReadingArticles();
     }
 
+    @GetMapping(path = "/{articleId}")
+    public GetArticleResponse getArticleById(@PathVariable Long articleId) {return articleService.getArticlesById(articleId);}
+
     @PutMapping("/{articleId}")
     public void updateArticle(@PathVariable Long articleId, @RequestBody UpdateArticleDto newArticle) {
         articleService.updateArticle(articleId, newArticle);

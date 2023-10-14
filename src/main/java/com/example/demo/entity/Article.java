@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -62,5 +63,19 @@ public class Article extends BaseEntity {
         return lastTimeRead.plusDays(repetition.getNextPeriod());
     }
 
-
+    @Override
+    public String toString() {
+        return "Article{" +
+                "url='" + url + '\'' +
+                ", title='" + title + '\'' +
+                ", tags=" + tags +
+                ", subject='" + subject + '\'' +
+                ", series='" + series + '\'' +
+                ", type=" + type +
+                ", status=" + status +
+                ", lastTimeRead=" + lastTimeRead +
+                ", repetition=" + repetition +
+                ", nextTimeRead=" + nextTimeRead +
+                "} " + super.toString();
+    }
 }

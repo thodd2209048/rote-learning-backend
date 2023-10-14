@@ -18,4 +18,6 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     @Query("SELECT DISTINCT a.subject FROM Article a")
     List<String> getAllSubject();
 
+    @Query("SELECT a FROM Article a WHERE a.id = ?1")
+    Optional<Article> findArticleById(Long articleId);
 }

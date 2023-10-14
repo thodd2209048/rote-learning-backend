@@ -15,7 +15,6 @@ public class UpdateRepetitionDto implements IUpdateArticleDto {
 
     @Override
     public void updateArticle(Article article){
-        System.out.println(repetition);
         if (!Objects.equals(repetition, article.getRepetition())) {
             article.setRepetition(repetition);
             article.setLastTimeRead(LocalDate.now());

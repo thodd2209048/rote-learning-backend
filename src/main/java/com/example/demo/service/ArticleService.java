@@ -35,6 +35,17 @@ public class ArticleService {
                 .toList();
     }
 
+    public GetArticleResponse getArticlesById(Long articleId) {
+        try{
+            Article currentArticle = articleRepository.findArticleById(articleId)
+                    .orElseThrow(() -> new IllegalStateException("Article with id " + articleId + " does not exists"));
+            return new GetArticleResponse(currentArticle);
+        } catch (IllegalStateException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public AddArticleResponse addArticle(AddArticleDto article) {
         try{
             Optional<Article> articleOptionalUrl = articleRepository.findArticleByUrl(article.getUrl());
@@ -84,13 +95,20 @@ public class ArticleService {
 //        System.out.println(newArticle);
 //        articleRepository.save(article);
 //    }
-public  void updateArticle(Long id, UpdateArticleDto newArticle){
+public void updateArticle(Long id, UpdateArticleDto newArticleDto){
     Article article = articleRepository.findById(id)
             .orElseThrow(() -> new IllegalStateException("Article with id: " + id + "does not exists"));
 
-    newArticle.updateArticle(article);
-    System.out.println(newArticle);
-    articleRepository.save(article);
+    Article newArticle = new Article();
+    newArticleDto.updateArticle(newArticle);
+    newArticle.setId(article.getId());
+
+    if(newArticle.equals(article)){
+        throw new RuntimeException("Data is identical to the existing data. No updates are needed.");
+    } else {
+        articleRepository.save(newArticle);
+        System.out.println(newArticle);
+    }
 }
 
     public  void updateRepetitionArticle(Long id, UpdateRepetitionDto newArticle){
