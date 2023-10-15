@@ -8,6 +8,7 @@ import com.example.demo.entity.Article;
 import com.example.demo.response.AddArticleResponse;
 import com.example.demo.response.GetArticleResponse;
 import com.example.demo.service.ArticleService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,12 +43,12 @@ public class ArticleController {
     public GetArticleResponse getArticleById(@PathVariable Long articleId) {return articleService.getArticlesById(articleId);}
 
     @PutMapping("/{articleId}")
-    public void updateArticle(@PathVariable Long articleId, @RequestBody UpdateArticleDto newArticle) {
+    public void updateArticle(@PathVariable Long articleId, @Valid @RequestBody UpdateArticleDto newArticle) {
         articleService.updateArticle(articleId, newArticle);
     }
 
     @PutMapping("/updateRepetition/{articleId}")
-    public void updateRepetitionArticle(@PathVariable Long articleId, @RequestBody UpdateRepetitionDto newArticle) {
+    public void updateRepetitionArticle(@PathVariable Long articleId,@Valid @RequestBody UpdateRepetitionDto newArticle) {
         articleService.updateRepetitionArticle(articleId, newArticle);
     }
 
