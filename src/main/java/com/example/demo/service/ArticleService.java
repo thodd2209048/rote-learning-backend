@@ -71,30 +71,6 @@ public class ArticleService {
         articleRepository.deleteById(articleId);
     }
 
-//    public void updateArticle(Long id, UpdateArticleDto newArticle) {
-//        Article article = articleRepository.findById(id)
-//                .orElseThrow(() -> new IllegalStateException("Article with id: " + id + "does not exists"));
-//
-//        newArticle.updateArticle(article);
-//        articleRepository.save(article);
-//    }
-//
-//    public void updateLastTimeRead(Long id, UpdateLastTimeReadArticleDto newArticle) {
-//        Article article = articleRepository.findById(id)
-//                .orElseThrow(() -> new IllegalStateException("Article with id: " + id + "does not exists"));
-//
-//        newArticle.updateArticle(article);
-//        articleRepository.save(article);
-//    }
-
-//    public <T extends IUpdateArticleDto> void updateArticle(Long id, T newArticle){
-//        Article article = articleRepository.findById(id)
-//                .orElseThrow(() -> new IllegalStateException("Article with id: " + id + "does not exists"));
-//
-//        newArticle.updateArticle(article);
-//        System.out.println(newArticle);
-//        articleRepository.save(article);
-//    }
 public void updateArticle(Long id, UpdateArticleDto newArticleDto){
     Article article = articleRepository.findById(id)
             .orElseThrow(() -> new IllegalStateException("Article with id: " + id + "does not exists"));
