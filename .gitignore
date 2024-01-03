@@ -31,4 +31,4 @@ build/
 
 ### VS Code ###
 .vscode/
-src/main/java/com/example/demo/article/ArticleConfig.java
+src/main/java/com/example/demo/features/article/ArticleConfig.java
