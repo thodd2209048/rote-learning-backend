@@ -27,5 +27,7 @@ public class AddArticleResponse {
     private Status status;
     private LocalDate lastTimeRead;
     private Repetition repetition;
+    private Integer nextPeriod;
     private LocalDate nextTimeRead;
+
 }

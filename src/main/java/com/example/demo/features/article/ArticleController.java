@@ -2,35 +2,46 @@ package com.example.demo.features.article;
 
 import com.example.demo.features.article.dto.AddArticleDto;
 import com.example.demo.features.article.dto.UpdateArticleDto;
-import com.example.demo.features.article.dto.UpdateRepetitionDto;
 import com.example.demo.features.article.response.AddArticleResponse;
 import com.example.demo.features.article.response.GetArticleResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/articles")
 public class ArticleController {
     private final ArticleService articleService;
+
     @Autowired
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
     }
 
     @GetMapping
-    public List<GetArticleResponse> getArticles() {
-        return articleService.listArticleResponse();
+    public Page<GetArticleResponse> getArticles(
+            @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+            @RequestParam(required = false) LocalDate date,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String tag
+    ) {
+        return articleService.listArticleResponse(pageable, date, search, tag);
     }
 
     @GetMapping(path = "/{articleId}")
-    public GetArticleResponse getArticleById(@PathVariable Long articleId) {return articleService.getArticleResponseById(articleId);}
+    public GetArticleResponse getArticleById(@PathVariable Long articleId) {
+        return articleService.getArticleResponseById(articleId);
+    }
 
     @PostMapping
     public AddArticleResponse addArticle(@RequestBody AddArticleDto addArticleDto) {
-        System.out.println(addArticleDto);
         return articleService.addArticle(addArticleDto);
     }
 
@@ -47,6 +58,6 @@ public class ArticleController {
 
 //    @GetMapping("/extract")
 //    public void extract(){
-//        articleService.extract();
+//        articleService.moveData();
 //    }
 }

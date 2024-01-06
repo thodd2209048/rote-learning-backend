@@ -1,7 +1,6 @@
 package com.example.demo.features.serie;
 
 import com.example.demo.exception.ObjectNotFoundException;
-import com.example.demo.features.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +25,7 @@ public class SeriesService {
                 .toList();
     }
 
-    public Series seriesCountIncrease(String name) {
+    public Series increaseSeriesCount(String name) {
         Optional<Series> tagOptional = repository.findByName(name);
         Series series;
         if (tagOptional.isPresent()) {
@@ -41,7 +40,7 @@ public class SeriesService {
 
     }
 
-    public Series seriesCountDecrease(String name) {
+    public Series decreaseSeriesCount(String name) {
         Series series = this.getSeries(name);
         Long newCount = series.getCount() == 0 ? 0 : series.getCount() - 1;
         series.setCount(newCount);

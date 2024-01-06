@@ -27,12 +27,6 @@ public class GetArticleResponse {
     private Status status;
     private Repetition repetition;
     private LocalDate lastTimeRead;
-    private ZonedDateTime createdAt;
-    private ZonedDateTime updatedAt;
     private LocalDate nextTimeRead;
 
-    public Integer getOverdueDays() {
-        if (nextTimeRead == null) return null;
-        return Period.between(LocalDate.now(), nextTimeRead).getDays();
-    }
 }
