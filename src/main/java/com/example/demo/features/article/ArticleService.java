@@ -1,23 +1,27 @@
 package com.example.demo.features.article;
 
 import com.example.demo.exception.ObjectNotFoundException;
+import com.example.demo.features.article.constant.Repetition;
+import com.example.demo.features.article.constant.Status;
 import com.example.demo.features.article.dto.AddArticleDto;
 import com.example.demo.features.article.dto.UpdateArticleDto;
-import com.example.demo.features.article.dto.UpdateRepetitionDto;
 import com.example.demo.features.article.response.AddArticleResponse;
 import com.example.demo.features.article.response.GetArticleResponse;
 import com.example.demo.features.serie.SeriesService;
 import com.example.demo.features.subject.SubjectService;
 import com.example.demo.features.tag.TagService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ArticleService {
-    private final ArticleRepository articleRepository;
+    private final ArticleRepository repository;
     private final ArticleMapper mapper;
     private final TagService tagService;
     private final SubjectService subjectService;
@@ -28,56 +32,55 @@ public class ArticleService {
                           TagService tagService,
                           SubjectService subjectService,
                           SeriesService seriesService) {
-        this.articleRepository = repository;
+        this.repository = repository;
         this.mapper = mapper;
         this.tagService = tagService;
         this.subjectService = subjectService;
         this.seriesService = seriesService;
     }
 
-    public List<GetArticleResponse> listArticleResponse() {
-        return articleRepository.findAll()
-                .stream()
-                .map(mapper::toGetArticleResponse)
-                .toList();
+    public Page<GetArticleResponse> listArticleResponse(Pageable pageable,
+                                                        LocalDate date,
+                                                        String search,
+                                                        String tag) {
+        Page<Article> articles = repository.findAllByNextTimeReadBeForeNow(pageable, date, search, tag);
+        return articles
+                .map(this::convertToGetArticleResponse);
     }
 
     public GetArticleResponse getArticleResponseById(Long articleId) {
         Article article = this.getArticle(articleId);
-        return mapper.toGetArticleResponse(article);
+        return this.convertToGetArticleResponse(article);
     }
 
-    private Article getArticle(Long id){
-        return articleRepository.findById(id)
-                .orElseThrow(()-> new ObjectNotFoundException("Article with id " + id + " does not exists"));
+    private Article getArticle(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("Article with id " + id + " does not exists"));
     }
 
     public List<Article> listArticles() {
-        return articleRepository.findAll();
+        return repository.findAll();
     }
 
     @Transactional
     public AddArticleResponse addArticle(AddArticleDto addArticleDto) {
         System.out.println(addArticleDto);
-        Optional<Article> articleOptionalUrl = articleRepository.findArticleByUrl(addArticleDto.getUrl());
+        Optional<Article> articleOptionalUrl = repository.findArticleByUrl(addArticleDto.getUrl());
         if (articleOptionalUrl.isPresent()) {
             throw new IllegalStateException("article with url: " + addArticleDto.getUrl() + " is exists");
         }
 
-        Article newArticle = mapper.fromAddArticleResponse(addArticleDto);
-        articleRepository.save(newArticle);
+        Article newArticle = this.convertFromAddArticleDto(addArticleDto);
+        newArticle.setLastTimeRead(LocalDate.now());
+        repository.save(newArticle);
 
-        List<String> tagNames = addArticleDto.getTags();
-        for (String tagName : tagNames
-        ) {
-            tagService.tagIncrease(tagName);
-        }
+        this.increaseCountTags(addArticleDto.getTags());
 
         String subjectName = addArticleDto.getSubject();
-        subjectService.subjectCountIncrease(subjectName);
+        subjectService.increaseSubjectCount(subjectName);
 
         String seriesName = addArticleDto.getSeries();
-        seriesService.seriesCountIncrease(seriesName);
+        seriesService.increaseSeriesCount(seriesName);
 
         AddArticleResponse addArticleResponse = mapper.toAddArticleResponse(newArticle);
         System.out.println(addArticleResponse);
@@ -86,53 +89,85 @@ public class ArticleService {
     }
 
     @Transactional
+    public void updateArticle(Long id, UpdateArticleDto updateArticleDto) {
+        Article article = this.getArticle(id);
+
+        if(updateArticleDto.getSubject() != null){
+            subjectService.increaseSubjectCount(updateArticleDto.getSubject());
+            subjectService.decreaseSubjectCount(article.getSubject());
+        }
+
+        if(updateArticleDto.getSeries() != null){
+            seriesService.increaseSeriesCount(updateArticleDto.getSeries());
+            seriesService.decreaseSeriesCount(article.getSeries());
+        }
+
+        if(updateArticleDto.getTags() != null){
+            this.decreaseCountTags(article.getTags());
+            this.increaseCountTags(updateArticleDto.getTags());
+        }
+
+        mapper.updateFromUpdateArticleDto(updateArticleDto, article);
+
+        article.setLastTimeRead(LocalDate.now());
+
+        repository.save(article);
+    }
+
+    @Transactional
     public void deleteArticle(Long id) {
         Article article = this.getArticle(id);
 
-        List<String> tagNames = article.getTags();
+        this.decreaseCountTags(article.getTags());
+
+        String subjectName = article.getSubject();
+        subjectService.decreaseSubjectCount(subjectName);
+
+        String seriesName = article.getSeries();
+        seriesService.decreaseSeriesCount(seriesName);
+
+        repository.deleteById(id);
+    }
+
+
+    private GetArticleResponse convertToGetArticleResponse(Article article){
+        GetArticleResponse response = mapper.toGetArticleResponse(article);
+
+        return response;
+    }
+
+    private Article convertFromAddArticleDto(AddArticleDto addArticleDto){
+        Article article = mapper.fromAddArticleDto(addArticleDto);
+        return article;
+    }
+
+    private void decreaseCountTags(List<String> tagNames){
         for (String tagName : tagNames
         ) {
             tagService.tagDecrease(tagName);
         }
-
-        String subjectName = article.getSubject();
-        subjectService.subjectCountDecrease(subjectName);
-
-        String seriesName = article.getSeries();
-        seriesService.seriesCountDecrease(seriesName);
-
-        articleRepository.deleteById(id);
     }
 
-    public void updateArticle(Long id, UpdateArticleDto updateArticleDto) {
-        Article article = this.getArticle(id);
-
-        mapper.updateFromUpdateArticleDto(updateArticleDto, article);
+    private void increaseCountTags(List<String> tagNames){
+        for (String tagName : tagNames
+        ) {
+            tagService.tagIncrease(tagName);
+        }
     }
 
-
-//    public void save(Article article) {
-//        articleRepository.save(article);
-//    }
-
-//    ONLY USE FOR FIRST TIME GET INFORMATION
-//    public void extract() {
-//        List<Article> articles = this.listArticles();
-//        Map<String, Long> tagMap = new HashMap<>();
-//        for (Article article : articles
+//    public void moveData() {
+//        List<Article> articles = repository.findAll();
+//        for (Article a : articles
 //        ) {
-//            String name = article.getSeries();
-////            String normalizedTag = name.toLowerCase(Locale.ROOT).replaceAll("\\p{M}", "");
-//            if (name != null) {
-//                tagMap.merge(name, 1L, Long::sum);
+//            if(a.getRepetition()==null){
+//                a.setNextPeriod(null);
+//            } else{
+//                a.setNextPeriod(a.getRepetition().getNextPeriod());
 //            }
-//        }
 //
-//        List<Series> tagList = new ArrayList<>();
-//        for (Map.Entry<String, Long> entry : tagMap.entrySet()) {
-//            tagList.add(new Series(entry.getKey(), entry.getValue()));
+//            a.setType(a.getType().toUpperCase());
+//            a.setStatus(a.getStatus().toUpperCase());
+//            repository.save(a);
 //        }
-//
-//        seriesService.saveAll(tagList);
 //    }
 }

@@ -25,7 +25,7 @@ public class SubjectService {
                 .toList();
     }
 
-    public Subject subjectCountIncrease(String name) {
+    public Subject increaseSubjectCount(String name) {
         Optional<Subject> tagOptional = repository.findByName(name);
         Subject subject;
         if (tagOptional.isPresent()) {
@@ -40,7 +40,7 @@ public class SubjectService {
 
     }
 
-    public Subject subjectCountDecrease(String name) {
+    public Subject decreaseSubjectCount(String name) {
         Subject subject = this.getSubject(name);
         Long newCount = subject.getCount() == 0 ? 0 : subject.getCount() - 1;
         subject.setCount(newCount);

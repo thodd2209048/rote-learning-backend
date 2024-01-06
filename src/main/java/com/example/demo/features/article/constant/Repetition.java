@@ -3,38 +3,49 @@ package com.example.demo.features.article.constant;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
+import lombok.Setter;
+
 
 public enum Repetition {
-    FIRST_READING("first reading", 1),
-    FIRST_RE_READING( "1", 3),
-    SECOND_RE_READING( "2", 7),
-    THIRD_RE_READING( "3", 16),
-    FOURTH_RE_READING( "4", 60),
-    COMPLETED( "completed", 0);
+    FIRST(1, "first reading"),
+    REPEAT_ONE(3, "1"),
+    REPEAT_TWO(7, "2"),
+    REPEAT_THREE(16, "3"),
+    REPEAT_FOUR(60, "4"),
+    COMPLETED(365*1000, "completed");
 
-    private final String stepString;
-    @Getter
-    private final Integer nextPeriod;
-    Repetition(String stepString, Integer nextPeriod) {
-        this.stepString = stepString;
+    @Getter @Setter
+    private String stepString;
+    @Getter @Setter
+    private Integer nextPeriod;
+
+    Repetition(Integer nextPeriod, String stepString) {
         this.nextPeriod = nextPeriod;
+        this.stepString = stepString;
     }
 
-
     @JsonValue
-    public String getStepString(){
+    public String getStepString() {
         return stepString;
     }
 
     @JsonCreator
-    public static Repetition contentTypeFromString(String stepString){
-        for(Repetition contentType: Repetition.values()){
-            if(contentType.getStepString().equals(stepString)){
+    public static Repetition fromStepString(String stepString) {
+        for (Repetition contentType : Repetition.values()) {
+            if (contentType.getStepString().equals(stepString)) {
                 return contentType;
             }
         }
         return null;
     }
 
+    public static Repetition fromInteger(Integer value) {
+        for (Repetition repetition : Repetition.values()) {
+            if (repetition.getNextPeriod() == value) {
+                return repetition;
+            }
+        }
 
+        return null;
+    }
 }
