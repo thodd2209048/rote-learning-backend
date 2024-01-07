@@ -39,7 +39,7 @@ public class Article extends BaseEntity {
     private LocalDate nextTimeRead;
 
     public LocalDate getNextTimeRead() {
-        if ( nextPeriod == null || nextPeriod == 0) return null;
+        if ( nextPeriod == null ) return null;
         return lastTimeRead.plusDays(nextPeriod);
     }
 

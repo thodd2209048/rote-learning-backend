@@ -26,6 +26,7 @@ public class SeriesService {
     }
 
     public Series increaseSeriesCount(String name) {
+        if(name == null) return null;
         Optional<Series> tagOptional = repository.findByName(name);
         Series series;
         if (tagOptional.isPresent()) {
@@ -37,7 +38,6 @@ public class SeriesService {
             series = new Series(name, 1L);
         }
         return repository.save(series);
-
     }
 
     public Series decreaseSeriesCount(String name) {

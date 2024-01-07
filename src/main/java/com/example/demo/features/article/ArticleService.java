@@ -1,8 +1,6 @@
 package com.example.demo.features.article;
 
 import com.example.demo.exception.ObjectNotFoundException;
-import com.example.demo.features.article.constant.Repetition;
-import com.example.demo.features.article.constant.Status;
 import com.example.demo.features.article.dto.AddArticleDto;
 import com.example.demo.features.article.dto.UpdateArticleDto;
 import com.example.demo.features.article.response.AddArticleResponse;
@@ -64,27 +62,28 @@ public class ArticleService {
 
     @Transactional
     public AddArticleResponse addArticle(AddArticleDto addArticleDto) {
-        System.out.println(addArticleDto);
         Optional<Article> articleOptionalUrl = repository.findArticleByUrl(addArticleDto.getUrl());
         if (articleOptionalUrl.isPresent()) {
-            throw new IllegalStateException("article with url: " + addArticleDto.getUrl() + " is exists");
+            throw new IllegalStateException("Article with url: " + addArticleDto.getUrl() + " is exists");
         }
 
         Article newArticle = this.convertFromAddArticleDto(addArticleDto);
         newArticle.setLastTimeRead(LocalDate.now());
         repository.save(newArticle);
 
-        this.increaseCountTags(addArticleDto.getTags());
+        if(addArticleDto.getTags()!=null || !addArticleDto.getTags().isEmpty()){
+            this.increaseCountTags(addArticleDto.getTags());
+        }
 
-        String subjectName = addArticleDto.getSubject();
-        subjectService.increaseSubjectCount(subjectName);
+        if (addArticleDto.getSubject() != null) {
+            subjectService.increaseSubjectCount(addArticleDto.getSubject());
+        }
 
-        String seriesName = addArticleDto.getSeries();
-        seriesService.increaseSeriesCount(seriesName);
+        if (addArticleDto.getSeries() != null) {
+            seriesService.increaseSeriesCount(addArticleDto.getSeries());
+        }
 
-        AddArticleResponse addArticleResponse = mapper.toAddArticleResponse(newArticle);
-        System.out.println(addArticleResponse);
-        return addArticleResponse;
+        return mapper.toAddArticleResponse(newArticle);
 
     }
 
@@ -92,17 +91,17 @@ public class ArticleService {
     public void updateArticle(Long id, UpdateArticleDto updateArticleDto) {
         Article article = this.getArticle(id);
 
-        if(updateArticleDto.getSubject() != null){
+        if (updateArticleDto.getSubject() != null) {
             subjectService.increaseSubjectCount(updateArticleDto.getSubject());
             subjectService.decreaseSubjectCount(article.getSubject());
         }
 
-        if(updateArticleDto.getSeries() != null){
+        if (updateArticleDto.getSeries() != null) {
             seriesService.increaseSeriesCount(updateArticleDto.getSeries());
             seriesService.decreaseSeriesCount(article.getSeries());
         }
 
-        if(updateArticleDto.getTags() != null){
+        if (updateArticleDto.getTags() != null) {
             this.decreaseCountTags(article.getTags());
             this.increaseCountTags(updateArticleDto.getTags());
         }
@@ -130,25 +129,25 @@ public class ArticleService {
     }
 
 
-    private GetArticleResponse convertToGetArticleResponse(Article article){
+    private GetArticleResponse convertToGetArticleResponse(Article article) {
         GetArticleResponse response = mapper.toGetArticleResponse(article);
 
         return response;
     }
 
-    private Article convertFromAddArticleDto(AddArticleDto addArticleDto){
+    private Article convertFromAddArticleDto(AddArticleDto addArticleDto) {
         Article article = mapper.fromAddArticleDto(addArticleDto);
         return article;
     }
 
-    private void decreaseCountTags(List<String> tagNames){
+    private void decreaseCountTags(List<String> tagNames) {
         for (String tagName : tagNames
         ) {
             tagService.tagDecrease(tagName);
         }
     }
 
-    private void increaseCountTags(List<String> tagNames){
+    private void increaseCountTags(List<String> tagNames) {
         for (String tagName : tagNames
         ) {
             tagService.tagIncrease(tagName);

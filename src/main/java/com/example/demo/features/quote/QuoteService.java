@@ -29,6 +29,7 @@ public class QuoteService {
 
     public QuoteResponse getQuoteRandomly() {
         Long size = repository.count();
+        if(size==0) return null;
         Random random = new Random(System.currentTimeMillis());
         Long randomId = random.nextLong(size) + 1;
         return mapper.toQuoteResponse(this.getQuote(randomId));
