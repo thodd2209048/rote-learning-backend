@@ -3,6 +3,7 @@ package com.example.demo.features.article;
 import com.example.demo.exception.ObjectNotFoundException;
 import com.example.demo.features.article.dto.AddArticleDto;
 import com.example.demo.features.article.dto.UpdateArticleDto;
+import com.example.demo.features.article.dto.UpdateLastTimeReadArticleDto;
 import com.example.demo.features.article.response.AddArticleResponse;
 import com.example.demo.features.article.response.GetArticleResponse;
 import com.example.demo.features.serie.SeriesService;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -108,9 +110,19 @@ public class ArticleService {
 
         mapper.updateFromUpdateArticleDto(updateArticleDto, article);
 
+        repository.save(article);
+    }
+
+    public GetArticleResponse updateLastTimeReadArticleDto(Long articleId, UpdateLastTimeReadArticleDto updateArticleDto) {
+        Article article = this.getArticle(articleId);
+
+        mapper.updateFromUpdateLastTimeReadArticleDto(updateArticleDto, article);
+
         article.setLastTimeRead(LocalDate.now());
 
         repository.save(article);
+
+        return mapper.toGetArticleResponse(article);
     }
 
     @Transactional
@@ -153,6 +165,8 @@ public class ArticleService {
             tagService.tagIncrease(tagName);
         }
     }
+
+
 
 //    public void moveData() {
 //        List<Article> articles = repository.findAll();

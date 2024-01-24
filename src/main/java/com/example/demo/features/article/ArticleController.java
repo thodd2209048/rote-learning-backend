@@ -2,6 +2,7 @@ package com.example.demo.features.article;
 
 import com.example.demo.features.article.dto.AddArticleDto;
 import com.example.demo.features.article.dto.UpdateArticleDto;
+import com.example.demo.features.article.dto.UpdateLastTimeReadArticleDto;
 import com.example.demo.features.article.response.AddArticleResponse;
 import com.example.demo.features.article.response.GetArticleResponse;
 import jakarta.validation.Valid;
@@ -48,6 +49,12 @@ public class ArticleController {
     @PutMapping("/{articleId}")
     public void updateArticle(@PathVariable Long articleId, @Valid @RequestBody UpdateArticleDto updateArticleDto) {
         articleService.updateArticle(articleId, updateArticleDto);
+    }
+
+    @PutMapping("/updateLastTimeRead/{articleId}")
+    public GetArticleResponse updateLastTimeReadArticleDto(@PathVariable Long articleId,
+                                             @Valid @RequestBody UpdateLastTimeReadArticleDto updateArticleDto) {
+        return articleService.updateLastTimeReadArticleDto(articleId, updateArticleDto);
     }
 
     @DeleteMapping(path = {"articleId"})
