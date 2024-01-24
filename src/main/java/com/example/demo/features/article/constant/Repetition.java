@@ -12,7 +12,7 @@ public enum Repetition {
     REPEAT_TWO(7, "2"),
     REPEAT_THREE(16, "3"),
     REPEAT_FOUR(60, "4"),
-    COMPLETED(365*1000, "completed");
+    COMPLETED(null, "completed");
 
     @Getter @Setter
     private String stepString;
