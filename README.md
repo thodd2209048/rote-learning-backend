@@ -16,12 +16,25 @@ Lập trình là lĩnh vực đòi hỏi người học phải đọc nhiều t�
 * PostgreSQL
 
 ### Front-end
+[Repository](https://github.com/thodd2209048/Rote-learning)
+
 Tại thư mục chứa front-end. Cài đặt các biến môi trường và chạy ứng dụng: 
-```set "REACT_APP_BACK_END_HOST=<back-end-host>" & set "REACT_APP_BACK_END_PORT=<back-end-port>" && serve -s build -l <front-end-port>```
+```cmd
+npm run build
+```
+```cmd
+set "REACT_APP_BACK_END_HOST=<back-end-host>" & set "REACT_APP_BACK_END_PORT=<back-end-port>" && serve -s build -l <front-end-port>
+```
 
 ### Back-end
+[Repository](https://github.com/thodd2209048/rote-learning-backend)
+
 Tại thư mục chứa back-end. Cài đặt các biến môi trường và chạy ứng dụng: 
-```java -jar -Dserver.port=<back-end-port> -DFRONT_END_URL=<front-end-url> -DPOSTGRES_HOST=<postgres-host> -DPOSTGRES_PORT=<postgres-port> -DPOSTGRES_PASSWORD=<postgres-password>  -DPOSTGRES_USERNAME=<postgres-username> demo-0.0.1-SNAPSHOT.jar```
+```cmd
+java -jar -Dserver.port=<back-end-port> -DFRONT_END_URL=<front-end-url> -DPOSTGRES_HOST=<postgres-host> -DPOSTGRES_PORT=<postgres-port> -DPOSTGRES_PASSWORD=<postgres-password>  -DPOSTGRES_USERNAME=<postgres-username> demo-0.0.1-SNAPSHOT.jar
+```
+
+  
 
 
 
